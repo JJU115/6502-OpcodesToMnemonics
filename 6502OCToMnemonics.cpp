@@ -42,9 +42,91 @@ int main(int argc, char *argv[]) {
     if ((Header[6] & 0x04) != 0)
         In.seekg(512); 
     
+    //Based on addressing type, 
+    uint8_t CODE, AddrType;
     while (!In.eof()) {
         In.read(Buf, 1);
+        CODE = Buf[0];
         Out << OPCODES[Buf[0]] << " ";
+
+        switch (CODE) {
+            case 0x00:
+                break;
+            case 0x40:
+                break;
+            case 0x60:
+                break;
+            case 0x48:
+                break;
+            case 0x08:
+                break;
+            case 0x68:
+                break;
+            case 0x28:
+                break;
+            case 0x20:
+                break;
+            case 0x4C:   
+                break;
+            case 0x6C:
+                break;
+            default:
+
+        }
+        
+
+        switch (CODE & 0x03) {  //Extract bits 0,1
+            case 0:
+                AddrType = ((CODE & 0x1C) >> 2);
+                break;
+            case 1:
+                switch ((CODE & 0x1C) >> 2) {
+                    case 0:
+                        AddrType = 2;
+                        break;
+                    case 2:
+                        AddrType = 0;
+                        break;
+                    default:
+                        AddrType = ((CODE & 0x1C) >> 2);
+                }
+                break;
+            case 2:
+                AddrType = (CODE != 0xBE) ? ((CODE & 0x1C) >> 2) : 6;
+                break;
+        }
+
+        switch (AddrType) {
+            //Immediate
+            case 0:
+                break;
+            //Zero Page
+            case 1:
+                break;
+            //Indexed Indirect
+            case 2:
+                break;
+            //Absolute
+            case 3:
+                break;
+            //Indirect Indexed
+            case 4:
+                break;
+            //Zero Page Indexed
+            case 5:
+                break;
+            //Absolute, X
+            case 6:
+                break;
+            //Absolute, Y
+            case 7:
+                break;
+            //Implied/Accumulator
+            case 8:
+                break;
+
+        }
+
         Out << '\n';
     }
     
